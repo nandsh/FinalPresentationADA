@@ -120,10 +120,10 @@ head(edges)
 # 
 # library(twitteR)
 # 
-# consumer_key <- "IkjBlcC28yXnzioNILrAQ3ES0"
-# consumer_secret <- "HDA0bTYCbtzzh6TCzbV16MLCSpshRRps9rfTUiqHuYZ77juIkw"
-# access_token <- "733013432291590144-MiztL3FghWknVXUkqcw4ElgMyi0tkmn"
-# access_secret <- "H3JAzjDQYv5idMrEMdfr6eC3mq1EWfcY9Go4xsD1X8pDl"
+# consumer_key <- ""
+# consumer_secret <- ""
+# access_token <- ""
+# access_secret <- ""
 # setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 # users<-NULL
 # statCount<-NULL
