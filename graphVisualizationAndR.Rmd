@@ -1,0 +1,208 @@
+---
+title: "Graph Visualization and R"
+author: "Nitin Verma and Nandini Sharma"
+date: "November 19, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Reading Data
+```{r}
+library(curl)
+#f <- curl("/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/twitter/22915745.edges")
+#d <- read.csv(f, header=TRUE, stringsAsFactors=TRUE)
+d <- read.table("/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/twitter/22915745.edges",header=FALSE,sep="")
+head(d)
+```
+Preparing Nodes and edges
+```{r}
+nodes <- data.frame(id = 1:10)
+edges <- data.frame(from = c(2,4,3,2,1,6,5,4,3), to = c(1,2,3,3,3,1,2,3,4))
+```
+
+Visualising network data
+```{r}
+require(visNetwork, quietly = TRUE)
+visNetwork(nodes, edges, height = "500px", width = "100%")
+```
+
+Adding direction
+```{r}
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(shadow = TRUE,
+           arrows =list(to = list(enabled = TRUE, scaleFactor = 2))) %>%
+  visLayout(randomSeed = 12) # to have always the same network         
+```
+
+Adding Node Labels and tool tip
+```{r}
+nodes<-data.frame(id=nodes$id,
+           label = paste("Node", 1:nrow(nodes)), 
+           title = paste0("<p><br>Node <b>", 1:nrow(nodes),"</b></p>"))
+
+visNetwork(nodes, edges, width = "100%") %>% 
+  visNodes(shape = "circle" ) %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+Adding Edge Labels
+
+```{r}
+visNetwork(nodes, edges, width = "100%") %>% 
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+Adding groups and legends
+```{r}
+nodes <- data.frame(id = nodes$id, 
+                    label = paste("Node", 1:nrow(nodes)), 
+                    title = paste0("<p><br>Node <b>", 1:nrow(nodes),"</b></p>"),
+                    group = rep(c("B", "A"),nrow(nodes)/2))
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "A", color = "grey") %>%
+  visGroups(groupname = "B", color = "lightblue") %>%
+  visLegend(width = 0.1, position = "right", main = "Group") %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+Highlight Nearest
+```{r}
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "A", color = "grey") %>%
+  visGroups(groupname = "B", color = "lightblue") %>%
+  visLegend(width = 0.1, position = "right", main = "Group") %>%
+  visOptions(highlightNearest = list(enabled = T, degree = 2, hover = T)) %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+Select NodeID
+```{r}
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "A", color = "grey") %>%
+  visGroups(groupname = "B", color = "lightblue") %>%
+  visLegend(width = 0.1, position = "right", main = "Group") %>%
+  visOptions(highlightNearest = list(enabled = T, degree = 2, hover = T),
+             nodesIdSelection = TRUE) %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+
+Data Manipulation
+```{r}
+visNetwork(nodes, edges, width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "A", color = "grey") %>%
+  visGroups(groupname = "B", color = "lightblue") %>%
+  visLegend(width = 0.1, position = "right", main = "Group") %>%
+  visOptions(highlightNearest = list(enabled = T, degree = 2, hover = T),
+             nodesIdSelection = TRUE) %>%
+  visOptions(manipulation = TRUE) %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+
+```
+Twitter DataSet
+```{r}
+edges <- data.frame(from=as.vector(factor(d$V1)), to=as.vector(factor(d$V2)))
+head(edges)
+# nodes <-c(d$V1,d$V2)
+# head(nodes)
+# nodes<-as.vector(unique(nodes))
+# nodes<-data.frame(id = nodes)
+# head(nodes)
+# nrow(nodes)
+# nrow(edges)
+# 
+# library(twitteR)
+# 
+# consumer_key <- "IkjBlcC28yXnzioNILrAQ3ES0"
+# consumer_secret <- "HDA0bTYCbtzzh6TCzbV16MLCSpshRRps9rfTUiqHuYZ77juIkw"
+# access_token <- "733013432291590144-MiztL3FghWknVXUkqcw4ElgMyi0tkmn"
+# access_secret <- "H3JAzjDQYv5idMrEMdfr6eC3mq1EWfcY9Go4xsD1X8pDl"
+# setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
+# users<-NULL
+# statCount<-NULL
+# group<-NULL
+# for (i in c(1:nrow(nodes))){
+#   tryCatch(
+#     {users[i]<-getUser(nodes[i,"id"])$screenName},
+#     warning = function(w) {},
+#     error = function(e) {users[i]=NA},
+#     finally = {}
+#   )
+#   }
+# length(users)
+# nodes["name"]<-users
+# for (i in c(1:nrow(nodes))){
+#   tryCatch(
+#     {statCount[i]<-getUser(nodes[i,"id"])$getStatusesCount()},
+#            warning = function(w) {},
+#            error = function(e) {statCount[i]=NA},
+#            finally = {}
+#   )
+#   if(is.na(statCount[i])) {group[i] = "NA"}
+#   else if (statCount[i]<5000){group[i] = "<5K"}
+#   else if (statCount[i]<10000) {group[i] = "<10K"}
+#   else if (statCount[i]<20000) {group[i] = "<20K"}
+#   else {group[i] = ">20K"}
+#   }
+# nodes["statcount"]<-statCount
+# nodes["group"]<-group
+# nodes["label"]<-nodes$name
+# write.table(nodes, file = "/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/users.csv", sep = ",")
+u <- read.csv("/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/users.csv",header=TRUE, stringsAsFactors=FALSE)
+nodes<-as.data.frame(u)
+head(nodes)
+```
+Select NodeID
+```{r}
+require(stringr)
+nodes["label"]<-substr(nodes$name,1,10)
+nodes["title"]<-nodes$name
+
+visNetwork(nodes, edges[c(1:300),], width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "<5K", color = "pink") %>%
+  visGroups(groupname = "<10K", color = "grey") %>%
+  visGroups(groupname = "<20K", color = "orange") %>%
+  visGroups(groupname = ">20K", color = "lightblue") %>%
+  visGroups(groupname = "NA", color = "turquoise") %>%
+  visLegend(width = 0.1, position = "left", main = "Group") %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE,
+             selectedBy = "group") %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
+
+Layout
+```{r}
+lnodes <- data.frame(label = c("<5K", "<10K", "<20K",">20K","NA"),
+                     color = c("pink","grey","orange","lightblue","turquoise"),
+                     shape = "ellipse")
+
+# edges data.frame for legend
+ledges <- data.frame(label = "follows", arrows = "to")
+ 
+visNetwork(nodes, edges[c(1:300),], width = "100%") %>%
+  visNodes(shape = "circle" ) %>%
+  visEdges(arrows = "to", label = "follows") %>%
+  visGroups(groupname = "<5K", color = "pink") %>%
+  visGroups(groupname = "<10K", color = "grey") %>%
+  visGroups(groupname = "<20K", color = "orange") %>%
+  visGroups(groupname = ">20K", color = "lightblue") %>%
+  visGroups(groupname = "NA", color = "turquoise") %>%
+  visLegend(width = 0.1, position = "left", addEdges = ledges, addNodes = lnodes, 
+            useGroups = FALSE, main="statusCount") %>%
+  visIgraphLayout(layout = "layout_in_circle") %>%
+  visNodes(size = 20) %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE,
+             selectedBy = "group") %>%
+  visLayout(randomSeed = 12) # to have always the same network 
+```
