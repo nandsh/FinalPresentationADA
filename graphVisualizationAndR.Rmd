@@ -8,23 +8,26 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+#Graphs
+If we look around , we will find that everything is a network and we have not even begun to look closely. Especially given the social media mania that we are all experiencing today, it does not surt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some of the graph statistics.
 
 #Basic Graph Visualization in R
 ##Reading Data
-For the purposes of this document, we downloaded a Twitter dataset from the web and will use it for demonstrating the graph visualization capabilities of R.
 
-```{r}
-library(curl)
-#f <- curl("/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/twitter/22915745.edges")
-#d <- read.csv(f, header=TRUE, stringsAsFactors=TRUE)
-d <- read.table("twitterData/22915745.edges",header=FALSE,sep="")
-head(d)
-```
+For the purposes of this document, we downloaded a Twitter dataset from the web and will use it for demonstrating the graph visualization capabilities of R.
+But before we go ahead and deal with the real world data, we willdemonstrate R's graph powers on dummy and small dataset. 
+
 
 ##Preparing Nodes and edges
-The package `visNetwork` requires both nodes, and edges to be input as dataframes. So let's create a dummy dataset split across two dataframes.
+We are exploring the package `visNetwork`, which is based on the visualization java script library vis.js, to generate some interesting interactive graph visuals. But before that, we need to generate some data that we will feed to this pacakage. 
+So the package `visNetwork` requires both nodes, and edges to be input as dataframes. Let's create a dummy dataset split across two dataframes. Just as a primer, we would like to highlight what nodes and edges mean in relation to a graph. 
+
+Nodes are entities and Edges are relationships between those entities. Now these nodes can be literally anything i.e. humans, planets, ants, flora, emotions, tangible, intangible etc. Nodes are like nouns! Edges on the other hand are relationships between those nouns. 
 ```{r}
+#Generating a set of 10 nodes
 nodes <- data.frame(id = 1:10)
+#Assigning random relationship between those nodes. 
+#e.g. edges depict that there is a "directed" relationship from node 2 to node 1, from node 4 to node 2 and so no. This relationship in context of twitter can be "follws" i.e. 2 follows 1, 4 follows 2 and so on. 
 edges <- data.frame(from = c(2,4,3,2,1,6,5,4,3), to = c(1,2,3,3,3,1,2,3,4))
 ```
 
@@ -36,6 +39,7 @@ visNetwork(nodes, edges, height = "500px", width = "100%")
 ```
 
 ##Adding direction
+But the visual we see above does not take into account the directions of the edges. 
 The function `visEdges` is used here to add arrows (i.e., direction info) to all the edges.
 ```{r}
 visNetwork(nodes, edges, width = "100%") %>% 
@@ -46,6 +50,7 @@ visNetwork(nodes, edges, width = "100%") %>%
 The call to `visLayout()` forces the graph to be displayed in the same way each time. The value assigned to randomSeed is arbitrary, but needs to be specified as a fixed value to obtain a fixed graph layout.
 
 ##Adding Node Labels and tool tip
+To make the visualization more informative, we can add more information about the nodes i.e. label/title etc. 
 The function `visNodes()` is used here to tailor the look of each node on the graph.
 Prior to that, we modify the `nodes` dataframe, and create columns for `label`, and `title` which contain the name of each node.
 ```{r}
@@ -68,6 +73,7 @@ visNetwork(nodes, edges, width = "100%") %>%
 ```
 
 ##Adding groups and legends
+Lets say you have a huge graph with many different nodes but you only want to visualize a subset of those nodes i.e. you want to look at one particular group at a time. e.g. there is a web of your social network data on twitter that you have visualized but you want to look at nodes by their followe counts. i.e. making groups of node with a certain number of followe counts. So here you need to make groups of nodes. Following piece of code make such groups and visualizes them separately
 ```{r}
 nodes <- data.frame(id = nodes$id, 
                     label = paste("Node", 1:nrow(nodes)), 
@@ -83,7 +89,7 @@ visNetwork(nodes, edges, width = "100%") %>%
 ```
 
 ##Highlight Nearest
-This section demonstrates the `visOptions()` function that is used to tailor the final output and also to add some more interactivity. In this case, with the `highlightNearest` parameter set, we output a graph where hovering over a node *dims* the nodes that are not connected to itself.
+This section demonstrates the `visOptions()` function that is used to tailor the final output and also to add some more interactivity. In this case, with the `highlightNearest` parameter set, we output a graph where hovering over a node *dims* the nodes that are not connected to itself. This is a very useful feature that helps highlight only the most adjacent nodes and edges of a web while hiding the rest of the network.
 ```{r}
 visNetwork(nodes, edges, width = "100%") %>%
   visNodes(shape = "circle" ) %>%
@@ -123,6 +129,14 @@ visNetwork(nodes, edges, width = "100%") %>%
   visOptions(manipulation = TRUE) %>%
   visLayout(randomSeed = 12) # to have always the same network 
 
+```
+
+```{r}
+library(curl)
+#f <- curl("/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/twitter/22915745.edges")
+#d <- read.csv(f, header=TRUE, stringsAsFactors=TRUE)
+d <- read.table("twitterData/22915745.edges",header=FALSE,sep="")
+head(d)
 ```
 
 #Twitter DataSet
@@ -337,3 +351,5 @@ grph.reciproc
 
 ##References:
 Book: "Statistical Analysis of Network Data with R", by Eric D. Kolaczyk, Gábor Csárdi 
+R Documentation for visnetwork
+https://datastorm-open.github.io/visNetwork/legend.html
