@@ -144,6 +144,7 @@ Now that we've seen some of the capabilities of the `visNetwork` package, let's 
 ```{r}
 edges <- data.frame(from=as.vector(factor(d$V1)), to=as.vector(factor(d$V2)))
 head(edges)
+# NOTE: The data downloaded from the SNAP website just had Twitter IDs of users. The following code fetches the screen names, and status counts of those Twitter IDs and then assigns those status counts to four different categories/groups based on their status counts. All Twitter IDs that were not found were assigned a screen name / status count  'NA'.
 # nodes <-c(d$V1,d$V2)
 # head(nodes)
 # nodes<-as.vector(unique(nodes))
@@ -188,7 +189,7 @@ head(edges)
 # nodes["statcount"]<-statCount
 # nodes["group"]<-group
 # nodes["label"]<-nodes$name
-# write.table(nodes, file = "/Users/nandinisharma/Desktop/notWork/School/RWorkingDirectory/GraphVIsualisationAndR/users.csv", sep = ",")
+# write.table(nodes, file = "users.csv", sep = ",")
 u <- read.csv("users.csv",header=TRUE, stringsAsFactors=FALSE)
 nodes<-as.data.frame(u)
 head(nodes)
