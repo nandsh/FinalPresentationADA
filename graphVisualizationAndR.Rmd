@@ -250,7 +250,16 @@ Let's create a dummy network dataset for this section via the `sample_gnp()` fun
 ```{r}
 grph <- sample_gnp(10, 7/10, directed = TRUE)
 ```
+
+Let's visualize what this network looks like.
+```{r}
+grph.edges <- as_data_frame(grph, what = c("edges"))
+grph.vertices <- data.frame(id = unique(grph.edges[, c("from")]))
+visNetwork(nodes=grph.vertices, edges=grph.edges, width="100%") %>% visNodes(shape="dot", size=10) %>% visEdges(arrows="to")
+```
+
 ##Degree
+
 ###In-degree
 The "in degree" of a vertex represents the number of edges coming "in" to it.
 
