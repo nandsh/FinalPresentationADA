@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 #Graphs
-If we look around , we will find that everything is a network and we have not even begun to look closely. Especially given the social media mania that we are all experiencing today, it does not surt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some of the graph statistics.
+If we look around, we will find that almost everything is part of a network and that we do not closely enough to appreciate that. Especially given the social media mania that we are all part of today, it does not hurt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely, it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some descriptive statistics.
 
 #Basic Graph Visualization in R
 ##Reading Data
@@ -140,7 +140,7 @@ head(d)
 ```
 
 #Twitter DataSet
-Now that we've seen some of the capabilities of the `visNetwork` package, let's put its capabilities to use for a real dataset of Twitter data.
+Now that we've seen some of the capabilities of the `visNetwork` package, let's put its capabilities to use for a real dataset of Twitter data. We downloaded this dataset from Stanford University's [Social Network Analysis Project (SNAP)](http://snap.stanford.edu/index.html) website. The dataset we used can be downloaded from [here](http://snap.stanford.edu/data/egonets-Twitter.html) by choosing the ["twitter.tar.gz"](http://snap.stanford.edu/data/twitter.tar.gz) file from the download section. After uncompressing the tar.gz file, we used the file `22915745.edges` for the following analysis.
 ```{r}
 edges <- data.frame(from=as.vector(factor(d$V1)), to=as.vector(factor(d$V2)))
 head(edges)
