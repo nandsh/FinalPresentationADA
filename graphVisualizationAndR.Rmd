@@ -22,6 +22,9 @@ knitr::opts_chunk$set(
   tidy.opts = list(width.cutoff = 75)
   )
 ```
+#Preliminaries
+Please install these packages first - `visNetwork`, `twitteR`, and `igraph`. 
+
 #Graphs
 If we look around, we will find that almost everything is part of a network and that we do not look closely enough to appreciate that. Especially given the social media mania that we are all part of today, it does not hurt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely, it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some network statistics.
 
