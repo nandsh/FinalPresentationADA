@@ -1,21 +1,35 @@
 ---
-title: "Graph Visualization and R"
+title: "Network Visualization and Statistics in R"
 author: "Nitin Verma and Nandini Sharma"
-date: "November 19, 2016"
-output: html_document
+date: "December 1, 2016"
+output: 
+  html_document:
+    theme: lumen
+    highlight: kate
+    toc: true
+    toc_depth: 3
+    toc_float: true
+
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  comment = "##",
+  prompt = FALSE,
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 75)
+  )
 ```
 #Graphs
-If we look around, we will find that almost everything is part of a network and that we do not closely enough to appreciate that. Especially given the social media mania that we are all part of today, it does not hurt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely, it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some descriptive statistics.
+If we look around, we will find that almost everything is part of a network and that we do not look closely enough to appreciate that. Especially given the social media mania that we are all part of today, it does not hurt to know a better way to see what surrounds us and to be more aware and informed about our networks. Fortuantely, it is really simple to do this in R. In this assignment we will explain some of the graph/network visualization tools to interact with graph visualizations and study some network statistics.
 
 #Basic Graph Visualization in R
 ##Reading Data
 
 For the purposes of this document, we downloaded a Twitter dataset from the web and will use it for demonstrating the graph visualization capabilities of R.
-But before we go ahead and deal with the real world data, we willdemonstrate R's graph powers on dummy and small dataset. 
+But before we go ahead and deal with the real world data, we will demonstrate R's graph powers on dummy and small dataset. 
 
 
 ##Preparing Nodes and edges
@@ -360,6 +374,15 @@ grph.reciproc
 ```
 
 ##References:
+
+**Graph Statistics**
+
 Book: "Statistical Analysis of Network Data with R", by Eric D. Kolaczyk, Gábor Csárdi 
-R Documentation for visnetwork
+
+**R Documentation for visnetwork**
+
 https://datastorm-open.github.io/visNetwork/legend.html
+
+**Visjs javascript library documentation - controlling physics**
+
+http://visjs.org/examples/network/physics/physicsConfiguration.html
