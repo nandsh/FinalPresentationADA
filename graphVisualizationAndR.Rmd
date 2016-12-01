@@ -28,7 +28,7 @@ Nodes are entities and Edges are relationships between those entities. Now these
 nodes <- data.frame(id = 1:10)
 #Assigning random relationship between those nodes. 
 #e.g. edges depict that there is a "directed" relationship from node 2 to node 1, from node 4 to node 2 and so no. This relationship in context of twitter can be "follws" i.e. 2 follows 1, 4 follows 2 and so on. 
-edges <- data.frame(from = c(2,4,3,2,1,6,5,4,3), to = c(1,2,3,3,3,1,2,3,4))
+edges <- data.frame(from = c(2,4,2,5,1,6,7,8,9,4,7), to = c(1,2,9,4,6,1,2,7,10,3,1))
 ```
 
 ##Visualising network data
